@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         知乎Plus（极简暗黑VSCode风）
 // @namespace    http://tampermonkey.net/
-// @version      3.4
+// @version      3.5
 // @description  知乎极简暗黑阅读模式，适配动态加载，避免顶部遮挡，删除回到顶部按钮，打造完美VSCode风体验
 // @author       https://github.com/enlian
 // @match        https://www.zhihu.com/*
@@ -10,132 +10,123 @@
 
 (function () {
   "use strict";
+  const COLORS = {
+    background: "#1e1e1e", // 页面背景色
+    blockBackground: "#222", // 内容块背景色
+    text: "#d4d4d4", // 默认文字颜色
+    buttonBackground: "#333", // 按钮背景色
+    buttonText: "rgb(205,205,205)", // 按钮文字颜色
+    linkText: "rgb(205,205,205)", // 链接文字颜色
+    border: "#444",
+  };
 
-  /**
-   * 需要彻底移除的元素
-   */
-  const REMOVE_ELEMENTS_SELECTORS = [
-    "figure",
-    "canvas",
-    "svg",
-    "use",
-    "header",
-    '[data-za-detail-view-path-module="RightSideBar"]',
-    ".QuestionHeader-side",
-    ".Question-sideColumn",
-    "button.FollowButton",
-    ".AppHeader-userInfo",
-    ".SearchBar-askButton",
-    ".ShareMenu",
-    ".TopstoryHeader",
-    ".QuestionHeader-content",
-    ".Question-sideColumn",
-    ".TopstoryItem--advertCard", // 广告
-    ".RichText-LinkCardContainer", //富文本跳转小块
-    ".ecommerce-ad-box", // 文章内商品广告
-  ];
-
-  /**
-   * 需要宽度设为100%的容器
-   */
-  const MAIN_CONTAINERS_SELECTORS = [
-    ".Topstory-mainColumn",
-    ".Question-mainColumn",
-    ".Topstory-container",
-    ".Question-main",
-    ".ListShortcut",
-  ];
-
-  /**
-   * 需要单独padding设为0的元素（比如每个回答块）
-   */
-  const ITEM_CONTENT_SELECTORS = [
-    ".TopstoryItem",
-    ".List-item",
-    ".QuestionAnswer-content",
-  ];
-
-  /**
-   * 需要设置深色背景的内容块
-   */
-  const DARK_BACKGROUND_SELECTORS = [
-    ".Card",
-    ".ContentItem",
-    ".Question-mainColumn",
-    ".Topstory-mainColumn",
-    ".Topstory-container",
-    ".Post-item",
-    ".Question-main",
-    ".ListShortcut",
-    ".ContentItem-actions",
-    ".QuestionHeader",
-    ".QuestionHeader-footer",
-    ".List-headerText",
-    ".comment_img",
-  ];
-
-  /**
-   * 隐藏所有图片/视频等多媒体元素
-   */
+  /** 隐藏所有图片和视频等视觉内容 */
   const hideVisualElements = (root = document) => {
-    root.querySelectorAll("img, picture, video").forEach((el) => {
+    const selectors = ["img", "picture", "video"];
+    root.querySelectorAll(selectors.join(",")).forEach((el) => {
       el.style.visibility = "hidden";
       el.style.opacity = "0";
     });
   };
 
-  /**
-   * 删除不需要的元素
-   */
+  /** 删除页面中不需要的元素，如广告、侧边栏、按钮等 */
   const removeUnnecessaryElements = (root = document) => {
-    root
-      .querySelectorAll(REMOVE_ELEMENTS_SELECTORS.join(","))
-      .forEach((el) => el.remove());
+    const selectors = [
+      "figure",
+      "canvas",
+      "svg",
+      "use",
+      "header",
+      '[data-za-detail-view-path-module="RightSideBar"]',
+      ".QuestionHeader-side",
+      ".Question-sideColumn",
+      "button.FollowButton",
+      ".AppHeader-userInfo",
+      ".SearchBar-askButton",
+      ".ShareMenu",
+      ".TopstoryHeader",
+      ".Question-sideColumn",
+      ".TopstoryItem--advertCard",
+      ".RichText-LinkCardContainer",
+      ".ecommerce-ad-box",
+      ".QuestionHeader-footer",
+      ".QuestionHeader-tags",
+      ".Reward",
+      ".UserLink",
+      ".AuthorInfo-badgeText",
+    ];
+    root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
 
-  /**
-   * 删除右下角的回到顶部按钮
-   */
-  const removeBackToTopButton = () => {
+  /** 删除特定 button（通过 aria-label 判断） */
+  const removeSpecificButtons = () => {
+    const labelsToRemove = ["回到顶部", "反对"];
     document.querySelectorAll("button").forEach((btn) => {
-      if (btn.getAttribute("aria-label") === "回到顶部") {
+      const label = btn.getAttribute("aria-label");
+      if (labelsToRemove.includes(label)) {
         btn.remove();
       }
     });
   };
 
-  /**
-   * 设置主列容器宽度100%
-   */
+  /** 设置主内容容器的宽度为100% */
   const styleMainContainers = (root = document) => {
-    root.querySelectorAll(MAIN_CONTAINERS_SELECTORS.join(",")).forEach((el) => {
+    const selectors = [
+      ".Topstory-mainColumn",
+      ".Question-mainColumn",
+      ".Topstory-container",
+      ".Question-main",
+      ".ListShortcut",
+      ".QuestionHeader-main",
+      ".App-main",
+      ".AuthorInfo-content",
+    ];
+    root.querySelectorAll(selectors.join(",")).forEach((el) => {
       Object.assign(el.style, {
         width: "100%",
         maxWidth: "100%",
         boxSizing: "border-box",
         padding: "0px",
         margin: "0 auto",
+        overflowX: "hidden",
       });
     });
   };
 
-  /**
-   * 给特定元素强制设置padding为0
-   */
-  const setItemContentPadding = (root = document) => {
-    root.querySelectorAll(ITEM_CONTENT_SELECTORS.join(",")).forEach((el) => {
-      el.style.padding = "0px 10px 20px 10px";
+  /** 调整每个回答块item的样式 */
+  const setItemStyle = (root = document) => {
+    const selectors = [
+      ".TopstoryItem",
+      ".List-item",
+      ".QuestionAnswer-content",
+    ];
+    root.querySelectorAll(selectors.join(",")).forEach((el) => {
+      el.style.padding = "20px 10px 20px 10px ";
+      el.style.borderBottom = `1px solid ${COLORS.border}`;
     });
   };
 
-  /**
-   * 给需要的内容块设置深灰背景
-   */
+  /** 给内容块设置暗色背景和文字颜色 */
   const styleContentBlocks = (root = document) => {
-    root.querySelectorAll(DARK_BACKGROUND_SELECTORS.join(",")).forEach((el) => {
+    const selectors = [
+      ".Card",
+      ".ContentItem",
+      ".Question-mainColumn",
+      ".Topstory-mainColumn",
+      ".Topstory-container",
+      ".Post-item",
+      ".Question-main",
+      ".ListShortcut",
+      ".ContentItem-actions",
+      ".QuestionHeader",
+      ".QuestionHeader-footer",
+      ".List-headerText",
+      ".comment_img",
+    ];
+    root.querySelectorAll(selectors.join(",")).forEach((el) => {
       Object.assign(el.style, {
-        backgroundColor: "#222",
-        color: "#d4d4d4",
+        backgroundColor: COLORS.blockBackground,
+        color: COLORS.text,
         boxSizing: "border-box",
         overflowWrap: "break-word",
         wordBreak: "break-word",
@@ -144,66 +135,57 @@
     });
   };
 
-  /**
-   * 所有元素基本统一文字处理
-   */
+  /** 所有元素通用的样式优化（比如换行处理） */
   const styleAllElements = (root = document) => {
     root.querySelectorAll("*").forEach((el) => {
-      el.style.overflowWrap = "break-word";
-      el.style.wordBreak = "break-word";
-      el.style.minWidth = "0";
-      el.style.boxSizing = "border-box";
+      Object.assign(el.style, {
+        overflowWrap: "break-word",
+        wordBreak: "break-word",
+        minWidth: "0",
+        boxSizing: "border-box",
+      });
     });
   };
 
-  /**
-   * 美化文字、按钮和链接的颜色
-   */
+  /** 美化按钮、链接和文字颜色 */
   const styleButtonsAndLinks = (root = document) => {
     root.querySelectorAll("button").forEach((btn) => {
       Object.assign(btn.style, {
-        backgroundColor: "#333",
-        color: "rgb(205,205,205)",
+        backgroundColor: COLORS.buttonBackground,
+        color: COLORS.buttonText,
         border: "none",
         boxSizing: "border-box",
       });
     });
-    root.querySelectorAll("a").forEach((a) => {
-      a.style.color = "rgb(205,205,205)";
-    });
-    root.querySelectorAll("span").forEach((a) => {
-      a.style.color = "rgb(205,205,205)";
+    root.querySelectorAll("a, span, h1").forEach((el) => {
+      el.style.color = COLORS.linkText;
     });
   };
 
-  /**
-   * 强制全局暗黑背景色
-   */
+  /** 设置页面整体背景为暗黑色 */
   const applyDarkBackground = () => {
     document.documentElement.style.overflowX = "hidden";
-    document.body.style.backgroundColor = "#1e1e1e";
-    document.body.style.color = "#d4d4d4";
+    document.body.style.backgroundColor = COLORS.background;
+    document.body.style.color = COLORS.text;
   };
 
-  /**
-   * 统一执行所有样式应用
-   */
+  /** 统一调用所有自定义样式 */
   const applyAllCustomStyles = () => {
     hideVisualElements();
     removeUnnecessaryElements();
-    removeBackToTopButton();
+    removeSpecificButtons();
     styleMainContainers();
-    setItemContentPadding();
+    setItemStyle();
     styleContentBlocks();
     styleAllElements();
     styleButtonsAndLinks();
     applyDarkBackground();
   };
 
-  // 初次应用
+  // 初始执行
   applyAllCustomStyles();
 
-  // 监听页面动态变化（比如下拉刷新）
+  // 监听 DOM 变化（应对知乎的动态加载机制）
   const observer = new MutationObserver(() => {
     applyAllCustomStyles();
   });
