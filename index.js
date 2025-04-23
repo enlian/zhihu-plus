@@ -15,7 +15,10 @@
    * 需要彻底移除的元素
    */
   const REMOVE_ELEMENTS_SELECTORS = [
-    "figure", "canvas", "svg", "use",
+    "figure",
+    "canvas",
+    "svg",
+    "use",
     "header",
     '[data-za-detail-view-path-module="RightSideBar"]',
     ".QuestionHeader-side",
@@ -28,8 +31,8 @@
     ".QuestionHeader-content",
     ".Question-sideColumn",
     ".TopstoryItem--advertCard", // 广告
-      ".RichText-LinkCardContainer", //富文本跳转小块
-      ".ecommerce-ad-box", // 文章内商品广告
+    ".RichText-LinkCardContainer", //富文本跳转小块
+    ".ecommerce-ad-box", // 文章内商品广告
   ];
 
   /**
@@ -48,24 +51,34 @@
    */
   const ITEM_CONTENT_SELECTORS = [
     ".TopstoryItem",
-      ".List-item",
-      ".QuestionAnswer-content"
+    ".List-item",
+    ".QuestionAnswer-content",
   ];
 
   /**
    * 需要设置深色背景的内容块
    */
   const DARK_BACKGROUND_SELECTORS = [
-    ".Card", ".ContentItem", ".Question-mainColumn", ".Topstory-mainColumn",
-    ".Topstory-container", ".Post-item", ".Question-main", ".ListShortcut",
-    ".ContentItem-actions", ".QuestionHeader", ".QuestionHeader-footer", ".List-headerText",".comment_img"
+    ".Card",
+    ".ContentItem",
+    ".Question-mainColumn",
+    ".Topstory-mainColumn",
+    ".Topstory-container",
+    ".Post-item",
+    ".Question-main",
+    ".ListShortcut",
+    ".ContentItem-actions",
+    ".QuestionHeader",
+    ".QuestionHeader-footer",
+    ".List-headerText",
+    ".comment_img",
   ];
 
   /**
    * 隐藏所有图片/视频等多媒体元素
    */
   const hideVisualElements = (root = document) => {
-    root.querySelectorAll("img, picture, video").forEach(el => {
+    root.querySelectorAll("img, picture, video").forEach((el) => {
       el.style.visibility = "hidden";
       el.style.opacity = "0";
     });
@@ -75,14 +88,16 @@
    * 删除不需要的元素
    */
   const removeUnnecessaryElements = (root = document) => {
-    root.querySelectorAll(REMOVE_ELEMENTS_SELECTORS.join(",")).forEach(el => el.remove());
+    root
+      .querySelectorAll(REMOVE_ELEMENTS_SELECTORS.join(","))
+      .forEach((el) => el.remove());
   };
 
   /**
    * 删除右下角的回到顶部按钮
    */
   const removeBackToTopButton = () => {
-    document.querySelectorAll("button").forEach(btn => {
+    document.querySelectorAll("button").forEach((btn) => {
       if (btn.getAttribute("aria-label") === "回到顶部") {
         btn.remove();
       }
@@ -93,7 +108,7 @@
    * 设置主列容器宽度100%
    */
   const styleMainContainers = (root = document) => {
-    root.querySelectorAll(MAIN_CONTAINERS_SELECTORS.join(",")).forEach(el => {
+    root.querySelectorAll(MAIN_CONTAINERS_SELECTORS.join(",")).forEach((el) => {
       Object.assign(el.style, {
         width: "100%",
         maxWidth: "100%",
@@ -108,7 +123,7 @@
    * 给特定元素强制设置padding为0
    */
   const setItemContentPadding = (root = document) => {
-    root.querySelectorAll(ITEM_CONTENT_SELECTORS.join(",")).forEach(el => {
+    root.querySelectorAll(ITEM_CONTENT_SELECTORS.join(",")).forEach((el) => {
       el.style.padding = "0px 10px 20px 10px";
     });
   };
@@ -117,7 +132,7 @@
    * 给需要的内容块设置深灰背景
    */
   const styleContentBlocks = (root = document) => {
-    root.querySelectorAll(DARK_BACKGROUND_SELECTORS.join(",")).forEach(el => {
+    root.querySelectorAll(DARK_BACKGROUND_SELECTORS.join(",")).forEach((el) => {
       Object.assign(el.style, {
         backgroundColor: "#222",
         color: "#d4d4d4",
@@ -133,7 +148,7 @@
    * 所有元素基本统一文字处理
    */
   const styleAllElements = (root = document) => {
-    root.querySelectorAll("*").forEach(el => {
+    root.querySelectorAll("*").forEach((el) => {
       el.style.overflowWrap = "break-word";
       el.style.wordBreak = "break-word";
       el.style.minWidth = "0";
@@ -145,7 +160,7 @@
    * 美化文字、按钮和链接的颜色
    */
   const styleButtonsAndLinks = (root = document) => {
-    root.querySelectorAll("button").forEach(btn => {
+    root.querySelectorAll("button").forEach((btn) => {
       Object.assign(btn.style, {
         backgroundColor: "#333",
         color: "rgb(205,205,205)",
@@ -153,10 +168,10 @@
         boxSizing: "border-box",
       });
     });
-    root.querySelectorAll("a").forEach(a => {
+    root.querySelectorAll("a").forEach((a) => {
       a.style.color = "rgb(205,205,205)";
     });
-      root.querySelectorAll("span").forEach(a => {
+    root.querySelectorAll("span").forEach((a) => {
       a.style.color = "rgb(205,205,205)";
     });
   };
@@ -194,5 +209,4 @@
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-
 })();
