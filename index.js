@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         知乎Plus（极简Text Mode + 暗黑VSCode風）完全修正版
 // @namespace    http://tampermonkey.net/
-// @version      3.2
-// @description  知乎极简暗黑阅读模式，自动适配动态加载，避免顶部空白遮挡，完美VSCode风体验
+// @version      3.3
+// @description  知乎极简暗黑阅读模式，自动适配动态加载，避免顶部空白遮挡，完美VSCode风体验 + 删除回到顶部按钮
 // @author       https://github.com/enlian
 // @match        https://www.zhihu.com/*
 // @grant        none
@@ -25,7 +25,7 @@
     ".TopstoryHeader",
     ".QuestionHeader-content",
     ".Question-sideColumn",
-      ".TopstoryItem--advertCard"
+    ".TopstoryItem--advertCard",
   ];
 
   const CONTAINER_SELECTORS = [
@@ -37,7 +37,7 @@
   ];
 
   const CONTENT_BLOCK_SELECTORS = [
-    ".Card", ".ContentItem", ".Question-mainColumn", ".Topstory-mainColumn", ".Topstory-container", ".Post-item", ".Question-main", ".ListShortcut",".ContentItem-actions"
+    ".Card", ".ContentItem", ".Question-mainColumn", ".Topstory-mainColumn", ".Topstory-container", ".Post-item", ".Question-main", ".ListShortcut", ".ContentItem-actions"
   ];
 
   const hideVisualMedia = (root = document) => {
@@ -49,6 +49,15 @@
 
   const removeUnwantedElements = (root = document) => {
     root.querySelectorAll(REMOVE_SELECTORS.join(",")).forEach(el => el.remove());
+  };
+
+  // ✅ 新增：删除回到顶部按钮
+  const removeBackToTopButton = () => {
+    document.querySelectorAll("button").forEach(btn => {
+      if (btn.getAttribute("aria-label") === "回到顶部") {
+        btn.remove();
+      }
+    });
   };
 
   const styleContainers = (root = document) => {
@@ -65,7 +74,7 @@
 
   const styleMainContentBlocks = (root = document) => {
     root.querySelectorAll(CONTENT_BLOCK_SELECTORS.join(",")).forEach(el => {
-      el.style.backgroundColor = "#222"; // 主内容块深灰背景
+      el.style.backgroundColor = "#222";
       el.style.color = "#d4d4d4";
       el.style.boxSizing = "border-box";
       el.style.overflowWrap = "break-word";
@@ -107,6 +116,7 @@
   const applyAllStyles = () => {
     hideVisualMedia();
     removeUnwantedElements();
+    removeBackToTopButton();
     styleContainers();
     styleMainContentBlocks();
     styleAllElements();
