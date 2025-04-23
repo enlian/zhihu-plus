@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         知乎Plus（极简Textモード+暗黑VSCode風）修正版
+// @name         知乎Plus（极简Text Mode + 暗黑VSCode風）完全修正版
 // @namespace    http://tampermonkey.net/
-// @version      3.1
-// @description  自动隐藏知乎视觉元素，展开主列，自适应宽度，禁止横向滚动，优化文字色，彻底暗黑主题，强制文字换行，适配动态加载（修正）
+// @version      3.2
+// @description  知乎极简暗黑阅读模式，自动适配动态加载，避免顶部空白遮挡，完美VSCode风体验
 // @author       https://github.com/enlian
 // @match        https://www.zhihu.com/*
 // @grant        none
@@ -13,7 +13,7 @@
 
   const REMOVE_SELECTORS = [
     "figure", "canvas", "svg", "use",
-      "header",
+    "header",
     ".RichContent-cover",
     '[data-za-detail-view-path-module="RightSideBar"]',
     ".QuestionHeader-side",
@@ -25,6 +25,7 @@
     ".TopstoryHeader",
     ".QuestionHeader-content",
     ".Question-sideColumn",
+      ".TopstoryItem--advertCard"
   ];
 
   const CONTAINER_SELECTORS = [
@@ -33,6 +34,10 @@
     ".Topstory-container",
     ".Question-main",
     ".ListShortcut"
+  ];
+
+  const CONTENT_BLOCK_SELECTORS = [
+    ".Card", ".ContentItem", ".Question-mainColumn", ".Topstory-mainColumn", ".Topstory-container", ".Post-item", ".Question-main", ".ListShortcut",".ContentItem-actions"
   ];
 
   const hideVisualMedia = (root = document) => {
@@ -58,13 +63,19 @@
     });
   };
 
+  const styleMainContentBlocks = (root = document) => {
+    root.querySelectorAll(CONTENT_BLOCK_SELECTORS.join(",")).forEach(el => {
+      el.style.backgroundColor = "#222"; // 主内容块深灰背景
+      el.style.color = "#d4d4d4";
+      el.style.boxSizing = "border-box";
+      el.style.overflowWrap = "break-word";
+      el.style.wordBreak = "break-word";
+      el.style.minWidth = "0";
+    });
+  };
+
   const styleAllElements = (root = document) => {
     root.querySelectorAll("*").forEach(el => {
-      const tag = el.tagName.toLowerCase();
-      if (tag !== "button" && tag !== "a") {
-        el.style.backgroundColor = "#222";
-        el.style.color = "#d4d4d4";
-      }
       el.style.overflowWrap = "break-word";
       el.style.wordBreak = "break-word";
       el.style.minWidth = "0";
@@ -97,6 +108,7 @@
     hideVisualMedia();
     removeUnwantedElements();
     styleContainers();
+    styleMainContentBlocks();
     styleAllElements();
     styleButtonsAndLinks();
     forceDarkBackground();
@@ -105,9 +117,9 @@
   // 初次应用
   applyAllStyles();
 
-  // 用 MutationObserver 实现动态内容更新
+  // 动态变化监听（下拉刷新、动态加载）
   const observer = new MutationObserver(() => {
-    applyAllStyles(); // 页面有变化就全局刷新样式
+    applyAllStyles();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
