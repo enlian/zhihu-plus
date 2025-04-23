@@ -19,7 +19,6 @@
     "use",
     ".RichContent-cover",
     '[data-za-detail-view-path-module="RightSideBar"]',
-    ".css-1reovvu",
     ".QuestionHeader-side",
     ".Question-sideColumn",
     "button.FollowButton",
