@@ -1,4 +1,5 @@
-# 知乎Plus（极简Text Mode + 暗黑VSCode風）完全修正版
+# 知乎Plus
+### 极简Text Mode + 暗黑VSCode風 完全修正版
 
 - 支持谷歌插件`油猴`，请订阅这个仓库以实现自动更新
 
