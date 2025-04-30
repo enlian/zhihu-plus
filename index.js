@@ -218,6 +218,10 @@
     document.body.style.color = COLORS.text;
   };
 
+  const removeFavicon = () => {
+  document.querySelectorAll('link[rel*="icon"]').forEach((el) => el.remove());
+};
+
   const applyAllCustomStyles = () => {
     hideVisualElements();
     removeUnnecessaryElements();
@@ -229,6 +233,7 @@
     styleButtonsAndLinks();
     applyDarkBackground();
     insertSearchBox();
+    removeFavicon();
   };
 
   applyAllCustomStyles();
