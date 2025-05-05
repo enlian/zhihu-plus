@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         知乎Plus（极简暗黑VSCode风+搜索框）
+// @name         知乎Plus
 // @namespace    http://tampermonkey.net/
 // @version      3.6
-// @description  知乎极简暗黑阅读模式 + 页面顶部搜索框（非固定，不遮挡视线）
-// @author       https://github.com/enlian + GPT助力
+// @description  知乎极简暗黑阅读模式
+// @author       https://github.com/enlian
 // @match        https://www.zhihu.com/*
 // @grant        none
 // ==/UserScript==
@@ -54,7 +54,7 @@
       backgroundColor: "#007acc",
       color: "#fff",
       cursor: "pointer",
-      marginLeft:"10px"
+      marginLeft: "10px",
     });
 
     const form = document.createElement("form");
@@ -110,8 +110,7 @@
       ".AuthorInfo-badgeText",
       ".SearchTabs",
       ".TopSearch",
-      "footer"
-
+      "footer",
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
@@ -137,7 +136,7 @@
       ".App-main",
       ".AuthorInfo-content",
       ".Search-container",
-      ".SearchMain"
+      ".SearchMain",
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
       Object.assign(el.style, {
@@ -152,7 +151,11 @@
   };
 
   const setItemStyle = (root = document) => {
-    const selectors = [".TopstoryItem", ".List-item", ".QuestionAnswer-content"];
+    const selectors = [
+      ".TopstoryItem",
+      ".List-item",
+      ".QuestionAnswer-content",
+    ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
       el.style.padding = "20px 10px 20px 10px";
       el.style.borderBottom = `1px solid ${COLORS.border}`;
@@ -219,8 +222,8 @@
   };
 
   const removeFavicon = () => {
-  document.querySelectorAll('link[rel*="icon"]').forEach((el) => el.remove());
-};
+    document.querySelectorAll('link[rel*="icon"]').forEach((el) => el.remove());
+  };
 
   const applyAllCustomStyles = () => {
     hideVisualElements();
