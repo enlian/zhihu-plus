@@ -91,6 +91,7 @@
       "svg",
       "use",
       "header",
+
       '[data-za-detail-view-path-module="RightSideBar"]',
       ".QuestionHeader-side",
       ".Question-sideColumn",
@@ -98,13 +99,17 @@
       ".AppHeader-userInfo",
       ".SearchBar-askButton",
       ".ShareMenu",
+
+
       ".TopstoryHeader",
       ".Question-sideColumn",
       ".TopstoryItem--advertCard",
       ".RichText-LinkCardContainer",
       ".ecommerce-ad-box",
-      ".QuestionHeader-footer",
+      //".QuestionHeader-footer",
       ".QuestionHeader-tags",
+
+
       ".Reward",
       ".UserLink",
       ".AuthorInfo-badgeText",
