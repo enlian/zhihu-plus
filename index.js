@@ -116,7 +116,8 @@
       ".SearchTabs",
       ".TopSearch",
       "footer",
-      ".QuestionStatus-notification"
+      ".QuestionStatus-notification",
+        ".CornerButtons"
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
