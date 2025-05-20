@@ -123,7 +123,8 @@
         ".CornerButtons",
         '.Post-Sub.Post-NormalSub',
         ".Post-Row-Content-right",
-        ".ColumnPageHeader-Wrapper"
+        ".ColumnPageHeader-Wrapper",
+        ".Pc-word-new"
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
