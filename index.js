@@ -155,6 +155,7 @@
         'div[style*="width: 688px"]',
         ".Post-Row-Content-left",
         ".Post-Row-Content-left-article",
+        ".css-1aq8hf9"
 
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
