@@ -13,7 +13,6 @@
 (function () {
   'use strict';
 
-  // 定义页面颜色主题
   const COLORS = {
     background: '#1e1e1e',
     blockBackground: '#222',
@@ -24,8 +23,16 @@
     border: '#444',
   };
 
-  // 定义基础盒模型样式，确保文本换行和布局一致性
+  // 基础盒模型样式，应用于主要容器和内容块，保证布局和文本换行一致性
   const BASE_BOX_STYLE = {
+    boxSizing: 'border-box',
+    overflowWrap: 'break-word',
+    wordBreak: 'break-word',
+    minWidth: '0',
+  };
+
+  // 基础元素样式，应用于所有元素，保证文本换行和盒模型一致
+  const BASE_ELEMENT_STYLE = {
     overflowWrap: 'break-word',
     wordBreak: 'break-word',
     minWidth: '0',
@@ -33,26 +40,8 @@
   };
 
   /**
-   * 为指定元素应用样式
-   * @param {HTMLElement} element - 目标元素
-   * @param {Object} style - 样式对象
-   */
-  const applyStyles = (element, style) => {
-    if (element) Object.assign(element.style, style);
-  };
-
-  /**
-   * 为指定选择器集合匹配的所有元素应用样式
-   * @param {string[]} selectors - CSS选择器数组
-   * @param {Object} style - 样式对象
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
-   */
-  const applyStylesToSelectors = (selectors, style, root = document) => {
-    root.querySelectorAll(selectors.join(',')).forEach((el) => applyStyles(el, style));
-  };
-
-  /**
-   * 插入自定义知乎搜索框到页面顶部
+   * 插入自定义的知乎搜索框
+   * 适用场景：页面顶部添加简洁的搜索输入框，方便用户快速搜索知乎内容
    */
   const insertSearchBox = () => {
     if (document.getElementById('vscode-search-box')) return;
@@ -110,10 +99,11 @@
   };
 
   /**
-   * 隐藏页面中的图片、视频等视觉元素，减少干扰
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
+   * 隐藏页面中的媒体元素（图片、视频等）
+   * 适用场景：减少视觉干扰，提升极简阅读体验
+   * @param {Document|Element} root - 作用根节点，默认文档根
    */
-  const hideVisualElements = (root = document) => {
+  const hideMediaElements = (root = document) => {
     const selectors = ['img', 'picture', 'video'];
     root.querySelectorAll(selectors.join(',')).forEach((el) => {
       el.style.visibility = 'hidden';
@@ -122,65 +112,68 @@
   };
 
   /**
-   * 移除页面中非必要的元素和特定按钮以简化界面
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
+   * 移除页面中的噪声元素，如广告、侧边栏、无关按钮等
+   * 适用场景：清理页面内容，去除干扰元素，提升阅读专注度
+   * @param {Document|Element} root - 作用根节点，默认文档根
    */
-  const removeUnnecessaryElements = (root = document) => {
+  const removeNoiseElements = (root = document) => {
+    // 选择器组：常见广告、侧边栏、无关内容等
     const selectors = [
-      // 媒体元素
       'figure',
       'canvas',
       'svg',
       'use',
-      // 头部和侧边栏
       'header',
+
       '[data-za-detail-view-path-module="RightSideBar"]',
       '.QuestionHeader-side',
       '.Question-sideColumn',
-      '.TopstoryHeader',
-      '.QuestionHeader-tags',
-      '.ColumnPageHeader-Wrapper',
-      // 按钮和用户信息相关
       'button.FollowButton',
       '.AppHeader-userInfo',
       '.SearchBar-askButton',
       '.ShareMenu',
+
+      '.TopstoryHeader',
+      '.Question-sideColumn',
+      '.TopstoryItem--advertCard',
+      '.RichText-LinkCardContainer',
+      '.ecommerce-ad-box',
+      //".QuestionHeader-footer",
+      '.QuestionHeader-tags',
+
       '.Reward',
       '.UserLink',
       '.AuthorInfo-badgeText',
       '.SearchTabs',
       '.TopSearch',
-      '.CornerButtons',
-      // 广告和推广内容
-      '.TopstoryItem--advertCard',
-      '.RichText-LinkCardContainer',
-      '.ecommerce-ad-box',
-      '.Pc-word-new',
-      // 文章状态和底部
       'footer',
       '.QuestionStatus-notification',
+      '.CornerButtons',
       '.Post-Sub.Post-NormalSub',
       '.Post-Row-Content-right',
-      // favicon 链接
-      'link[rel*="icon"]',
+      '.ColumnPageHeader-Wrapper',
+      '.Pc-word-new',
     ];
+    // 移除上述选择器对应的所有元素
     root.querySelectorAll(selectors.join(',')).forEach((el) => el.remove());
-
-    // 额外移除特定 aria-label 的按钮
+    // 移除 aria-label 为“回到顶部”或“反对”的按钮
     const labelsToRemove = ['回到顶部', '反对'];
-    root.querySelectorAll('button').forEach((btn) => {
+    document.querySelectorAll('button').forEach((btn) => {
       const label = btn.getAttribute('aria-label');
       if (labelsToRemove.includes(label)) {
         btn.remove();
       }
     });
+    // 删除 favicon 防止干扰
+    document.querySelectorAll('link[rel*="icon"]').forEach((el) => el.remove());
   };
 
   /**
-   * 将主要内容容器扩展至页面宽度的100%，并应用基础盒模型样式，保证布局一致
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
+   * 扩展主要内容容器宽度至100%
+   * 适用场景：调整页面布局，使内容区域最大化利用宽度，提升阅读体验
+   * @param {Document|Element} root - 作用根节点，默认文档根
    */
-  const expandAndNormalizeContainers = (root = document) => {
+  const expandMainLayoutWidth = (root = document) => {
     const selectors = [
       '.Topstory-mainColumn',
       '.Question-mainColumn',
@@ -197,55 +190,85 @@
       '.Post-Row-Content-left-article',
       '.css-1aq8hf9',
     ];
-    const style = {
-      ...BASE_BOX_STYLE,
-      width: '100%',
-      maxWidth: '100%',
-      padding: '0px',
-      margin: '0 auto',
-      overflowX: 'hidden',
-    };
-    applyStylesToSelectors(selectors, style, root);
+    root.querySelectorAll(selectors.join(',')).forEach((el) => {
+      Object.assign(
+        el.style,
+        Object.assign(
+          {
+            width: '100%',
+            maxWidth: '100%',
+            padding: '0px',
+            margin: '0 auto',
+            overflowX: 'hidden',
+          },
+          BASE_BOX_STYLE,
+        ),
+      );
+    });
   };
 
   /**
-   * 为内容块和列表项统一添加暗色主题背景、文字颜色、内边距和下边框，增强可读性
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
+   * 样式化内容区域的各个区块
+   * 适用场景：统一内容块的背景、边距和边框样式，提升整体视觉一致性
+   * @param {Document|Element} root - 作用根节点，默认文档根
    */
-  const styleContentBlocksAndItems = (root = document) => {
-    const selectors = [
-      '.Card',
-      '.ContentItem',
-      '.Question-mainColumn',
-      '.Topstory-mainColumn',
-      '.Topstory-container',
-      '.Post-item',
-      '.Question-main',
-      '.ListShortcut',
-      '.ContentItem-actions',
-      '.QuestionHeader',
-      '.QuestionHeader-footer',
-      '.List-headerText',
-      '.comment_img',
-      '.TopstoryItem',
-      '.List-item',
-      '.QuestionAnswer-content',
+  const styleContentAreaBlocks = (root = document) => {
+    // 配置数组，每个对象包含选择器和对应样式
+    const styleConfigs = [
+      {
+        selectors: ['.TopstoryItem', '.List-item', '.QuestionAnswer-content'],
+        style: {
+          padding: '20px 10px 20px 10px',
+          borderBottom: `1px solid ${COLORS.border}`,
+        },
+      },
+      {
+        selectors: [
+          '.Card',
+          '.ContentItem',
+          '.Question-mainColumn',
+          '.Topstory-mainColumn',
+          '.Topstory-container',
+          '.Post-item',
+          '.Question-main',
+          '.ListShortcut',
+          '.ContentItem-actions',
+          '.QuestionHeader',
+          '.QuestionHeader-footer',
+          '.List-headerText',
+          '.comment_img',
+        ],
+        style: {
+          backgroundColor: COLORS.blockBackground,
+          color: COLORS.text,
+          ...BASE_BOX_STYLE,
+        },
+      },
     ];
-    root.querySelectorAll(selectors.join(',')).forEach((el) => {
-      Object.assign(el.style, {
-        ...BASE_BOX_STYLE,
-        backgroundColor: COLORS.blockBackground,
-        color: COLORS.text,
-        padding: '10px 2px 10px 2px',
+    styleConfigs.forEach(({ selectors, style }) => {
+      root.querySelectorAll(selectors.join(',')).forEach((el) => {
+        Object.assign(el.style, style);
       });
     });
   };
 
   /**
-   * 为按钮和链接等交互元素应用统一样式，提升视觉一致性
-   * @param {Document|HTMLElement} root - 查询根节点，默认为document
+   * 应用全局基础样式，确保所有元素文本换行及盒模型一致
+   * 适用场景：统一页面所有元素的基础样式，避免样式冲突和显示异常
+   * @param {Document|Element} root - 作用根节点，默认文档根
    */
-  const styleInteractiveElements = (root = document) => {
+  const applyGlobalBaseStyle = (root = document) => {
+    root.querySelectorAll('*').forEach((el) => {
+      Object.assign(el.style, BASE_ELEMENT_STYLE);
+    });
+  };
+
+  /**
+   * 样式化按钮和链接元素，统一配色方案
+   * 适用场景：调整交互元素的颜色和样式，提升视觉一致性和可用性
+   * @param {Document|Element} root - 作用根节点，默认文档根
+   */
+  const applyButtonAndLinkStyle = (root = document) => {
     root.querySelectorAll('button').forEach((btn) => {
       Object.assign(btn.style, {
         backgroundColor: COLORS.buttonBackground,
@@ -260,34 +283,34 @@
   };
 
   /**
-   * 应用整体暗色背景和文字颜色，防止页面横向滚动
+   * 应用暗色背景和整体文字颜色
+   * 适用场景：切换页面为暗黑模式，减少视觉疲劳
    */
-  const applyDarkBackground = () => {
+  const applyDarkPageBackground = () => {
     document.documentElement.style.overflowX = 'hidden';
     document.body.style.backgroundColor = COLORS.background;
     document.body.style.color = COLORS.text;
   };
 
   /**
-   * 执行所有自定义样式应用任务
+   * 应用所有自定义样式和功能增强
+   * 适用场景：初始化及动态更新页面时调用，确保样式和功能一致生效
    */
-  const applyAllCustomStyles = () => {
-    const tasks = [
-      hideVisualElements,
-      removeUnnecessaryElements,
-      expandAndNormalizeContainers,
-      styleContentBlocksAndItems,
-      styleInteractiveElements,
-      applyDarkBackground,
-      insertSearchBox,
-    ];
-    tasks.forEach((fn) => fn());
+  const applyAllEnhancements = () => {
+    hideMediaElements();
+    removeNoiseElements();
+    expandMainLayoutWidth();
+    styleContentAreaBlocks();
+    applyGlobalBaseStyle();
+    applyButtonAndLinkStyle();
+    applyDarkPageBackground();
+    insertSearchBox();
   };
 
-  applyAllCustomStyles();
+  applyAllEnhancements();
 
   const observer = new MutationObserver(() => {
-    applyAllCustomStyles();
+    applyAllEnhancements();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
