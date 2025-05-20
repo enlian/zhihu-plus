@@ -5,6 +5,8 @@
 // @description  知乎极简暗黑阅读模式
 // @author       https://github.com/enlian
 // @match        https://www.zhihu.com/*
+// @match        https://zhuanlan.zhihu.com/*
+// @match        https://daily.zhihu.com/*
 // @grant        none
 // ==/UserScript==
 
@@ -118,7 +120,8 @@
       ".TopSearch",
       "footer",
       ".QuestionStatus-notification",
-        ".CornerButtons"
+        ".CornerButtons",
+        '.Post-Sub.Post-NormalSub'
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
@@ -146,7 +149,8 @@
       ".AuthorInfo-content",
       ".Search-container",
       ".SearchMain",
-        'div[style*="width: 688px"]'
+        'div[style*="width: 688px"]',
+
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
       Object.assign(el.style, {
