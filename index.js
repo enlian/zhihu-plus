@@ -84,6 +84,7 @@
     });
   };
 
+    //删除非必要元素
   const removeUnnecessaryElements = (root = document) => {
     const selectors = [
       "figure",
@@ -132,6 +133,7 @@
     });
   };
 
+    //宽度改成100%的元素
   const styleMainContainers = (root = document) => {
     const selectors = [
       ".Topstory-mainColumn",
@@ -144,6 +146,7 @@
       ".AuthorInfo-content",
       ".Search-container",
       ".SearchMain",
+        'div[style*="width: 688px"]'
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
       Object.assign(el.style, {
