@@ -121,7 +121,9 @@
       "footer",
       ".QuestionStatus-notification",
         ".CornerButtons",
-        '.Post-Sub.Post-NormalSub'
+        '.Post-Sub.Post-NormalSub',
+        ".Post-Row-Content-right",
+        ".ColumnPageHeader-Wrapper"
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => el.remove());
   };
@@ -150,6 +152,8 @@
       ".Search-container",
       ".SearchMain",
         'div[style*="width: 688px"]',
+        ".Post-Row-Content-left",
+        ".Post-Row-Content-left-article",
 
     ];
     root.querySelectorAll(selectors.join(",")).forEach((el) => {
