@@ -31,134 +31,147 @@
     const style = document.createElement("style");
     style.id = "vscode-global-style";
     style.textContent = `
-      /* 页面基础背景色与文字色 */
-      html {
-        overflow-x: hidden !important;
-      }
-      body {
-        background-color: #1e1e1e !important;
-        color: #d4d4d4 !important;
-      }
-      /* 全局文字样式 */
-      a,p,span,h1 {
-        color: ${COLORS.linkText} !important;
-        background-color: ${COLORS.blockBackground} !important;
-      }
-      /* 按钮样式 */
-      button {
-        background-color: ${COLORS.buttonBackground} !important;
-        color: ${COLORS.buttonText} !important;
-        border: none !important;
-        box-sizing: border-box !important;
-        cursor: pointer !important;
-      }
-      /* 所有元素的盒模型统一 */
-      * {
-        overflow-wrap: break-word !important;
-        word-break: break-word !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-      }
-      /* 内容区块暗色风格 */
-      .Card,
-      .ContentItem,
-      .Question-mainColumn,
-      .Topstory-mainColumn,
-      .Topstory-container,
-      .Post-item,
-      .Question-main,
-      .ListShortcut,
-      .ContentItem-actions,
-      .QuestionHeader,
-      .QuestionHeader-footer,
-      .List-headerText,
-      .Comments-container div,
-      .Modal-content,
-      .Modal-content div,
-      .comment_img {
-        background-color: ${COLORS.blockBackground} !important;
-        color: ${COLORS.text} !important;
-        box-sizing: border-box !important;
-        overflow-wrap: break-word !important;
-        word-break: break-word !important;
-        min-width: 0 !important;
-      }
-      /* 内容块 padding 和分隔线 */
-      .TopstoryItem,
-      .List-item,
-      .QuestionAnswer-content {
-        padding: 20px 10px 20px 10px !important;
-        border-bottom: 1px solid ${COLORS.border} !important;
-      }
-      /* 布局区域宽度设置 */
-      /* Expand main layout width to 100% for better reading experience */
-      .Topstory-mainColumn,
-      .Question-mainColumn,
-      .Topstory-container,
-      .Question-main,
-      .ListShortcut,
-      .QuestionHeader-main,
-      .App-main,
-      .AuthorInfo-content,
-      .Search-container,
-      .SearchMain,
-      div[style*="width: 688px"],
-      .Post-Row-Content-left,
-      .Post-Row-Content-left-article,
-      .css-1aq8hf9 {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0px !important;
-        margin: 0 auto !important;
-        overflow-x: hidden !important;
-        box-sizing: border-box !important;
-        overflow-wrap: break-word !important;
-        word-break: break-word !important;
-        min-width: 0 !important;
-      }
-      /* 自定义知乎搜索框样式 */
-      #vscode-search-box {
-        margin: 20px auto;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 0 10px;
-        height: 36px !important;
-      }
-      #vscode-search-box form {
-        flex: 1;
-        display: flex;
-        gap: 8px;
-        height: 36px;
-      }
-      #vscode-search-box input {
-        padding: 6px 10px;
-        border: 1px solid ${COLORS.border};
-        border-radius: 4px;
-        background-color: ${COLORS.blockBackground};
-        color: ${COLORS.text};
-        outline: none;
-        flex: 1;
-        height: 36px;
-        box-sizing: border-box;
-      }
-      #vscode-search-box button {
-        padding: 6px 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: ${COLORS.buttonBackground};
-        color: #fff;
-        cursor: pointer;
-        flex: none;
-        height: 36px;
-        box-sizing: border-box;
-      }
-      /* 隐藏媒体元素 */
-      img, picture, video {
-        visibility: hidden !important;
-        opacity: 0 !important;
-      }
-    `;
+        /* 页面基础背景色与文字色 */
+        html {
+          overflow-x: hidden !important;
+        }
+        body {
+          background-color: #1e1e1e !important;
+          color: #d4d4d4 !important;
+        }
+        /* 全局文字样式 */
+        a,p,span,h1 {
+          color: ${COLORS.linkText} !important;
+          background-color: ${COLORS.blockBackground} !important;
+        }
+        /* 按钮样式 */
+        button {
+          background-color: ${COLORS.buttonBackground} !important;
+          color: ${COLORS.buttonText} !important;
+          border: none !important;
+          box-sizing: border-box !important;
+          cursor: pointer !important;
+        }
+        /* 所有元素的盒模型统一 */
+        * {
+          overflow-wrap: break-word !important;
+          word-break: break-word !important;
+          min-width: 0 !important;
+          box-sizing: border-box !important;
+        }
+        /* 内容区块暗色风格 */
+        .Card,
+        .ContentItem,
+        .Question-mainColumn,
+        .Topstory-mainColumn,
+        .Topstory-container,
+        .Post-item,
+        .Question-main,
+        .ListShortcut,
+        .ContentItem-actions,
+        .QuestionHeader,
+        .QuestionHeader-footer,
+        .List-headerText,
+        .Comments-container div,
+        .Modal-content,
+        .Modal-content div,
+        .Post-content,
+        .Post-content div,
+        .comment_img {
+          background-color: ${COLORS.blockBackground} !important;
+          color: ${COLORS.text} !important;
+          box-sizing: border-box !important;
+          overflow-wrap: break-word !important;
+          word-break: break-word !important;
+          min-width: 0 !important;
+        }
+        /* 内容块 padding 和分隔线 */
+        .TopstoryItem,
+        .List-item,
+        .QuestionAnswer-content {
+          padding: 20px 10px 20px 10px !important;
+          border-bottom: 1px solid ${COLORS.border} !important;
+        }
+        /* 布局区域宽度设置 */
+        /* Expand main layout width to 100% for better reading experience */
+        .Topstory-mainColumn,
+        .Question-mainColumn,
+        .Topstory-container,
+        .Question-main,
+        .ListShortcut,
+        .QuestionHeader-main,
+        .App-main,
+        .AuthorInfo-content,
+        .Search-container,
+        .SearchMain,
+        div[style*="width: 688px"],
+        .Post-Row-Content-left,
+        .Post-Row-Content-left-article,
+        .css-1aq8hf9 {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 0px !important;
+          margin: 0 auto !important;
+          overflow-x: hidden !important;
+          box-sizing: border-box !important;
+          overflow-wrap: break-word !important;
+          word-break: break-word !important;
+          min-width: 0 !important;
+        }
+        /* 自定义知乎搜索框样式 */
+        #vscode-search-box {
+          margin: 20px auto;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 0 10px;
+          height: 36px !important;
+        }
+        #vscode-search-box form {
+          flex: 1;
+          display: flex;
+          gap: 8px;
+          height: 36px;
+        }
+        #vscode-search-box input {
+          padding: 6px 10px;
+          border: 1px solid ${COLORS.border};
+          border-radius: 4px;
+          background-color: ${COLORS.blockBackground};
+          color: ${COLORS.text};
+          outline: none;
+          flex: 1;
+          height: 36px;
+          box-sizing: border-box;
+        }
+        #vscode-search-box button {
+          padding: 6px 10px;
+          border: none;
+          border-radius: 4px;
+          background-color: ${COLORS.buttonBackground};
+          color: #fff;
+          cursor: pointer;
+          flex: none;
+          height: 36px;
+          box-sizing: border-box;
+        }
+        /* 隐藏媒体元素 */
+        img, picture, video {
+          visibility: hidden !important;
+          opacity: 0 !important;
+        }
+        /* 滚动条暗色主题 */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: #444;
+          border-radius: 4px;
+        }
+      `;
     document.head.appendChild(style);
   }
 
@@ -204,7 +217,6 @@
     "svg",
     "use",
     "header",
-
     '[data-za-detail-view-path-module="RightSideBar"]',
     ".QuestionHeader-side",
     ".Question-sideColumn",
@@ -212,14 +224,12 @@
     ".AppHeader-userInfo",
     ".SearchBar-askButton",
     ".ShareMenu",
-
     ".TopstoryHeader",
     ".Question-sideColumn",
     ".TopstoryItem--advertCard",
     ".RichText-LinkCardContainer",
     ".ecommerce-ad-box",
     ".QuestionHeader-tags",
-
     ".Reward",
     ".UserLink",
     ".AuthorInfo-badgeText",
