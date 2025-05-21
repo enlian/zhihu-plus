@@ -73,6 +73,8 @@
       .QuestionHeader-footer,
       .List-headerText,
       .Comments-container div,
+      .Modal-content,
+      .Modal-content div,
       .comment_img {
         background-color: ${COLORS.blockBackground} !important;
         color: ${COLORS.text} !important;
