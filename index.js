@@ -72,6 +72,7 @@
       .QuestionHeader,
       .QuestionHeader-footer,
       .List-headerText,
+      .Comments-container div,
       .comment_img {
         background-color: ${COLORS.blockBackground} !important;
         color: ${COLORS.text} !important;
@@ -116,10 +117,17 @@
       /* 自定义知乎搜索框样式 */
       #vscode-search-box {
         margin: 20px auto;
-        max-width: 720px;
         display: flex;
+        align-items: center;
         gap: 10px;
         padding: 0 10px;
+        height: 36px !important;
+      }
+      #vscode-search-box form {
+        flex: 1;
+        display: flex;
+        gap: 8px;
+        height: 36px;
       }
       #vscode-search-box input {
         padding: 6px 10px;
@@ -129,6 +137,8 @@
         color: ${COLORS.text};
         outline: none;
         flex: 1;
+        height: 36px;
+        box-sizing: border-box;
       }
       #vscode-search-box button {
         padding: 6px 10px;
@@ -137,7 +147,9 @@
         background-color: ${COLORS.buttonBackground};
         color: #fff;
         cursor: pointer;
-        margin-left: 10px;
+        flex: none;
+        height: 36px;
+        box-sizing: border-box;
       }
       /* 隐藏媒体元素 */
       img, picture, video {
@@ -162,6 +174,7 @@
     input.placeholder = "知乎搜索…";
 
     const button = document.createElement("button");
+    button.textContent = "搜索";
 
     const form = document.createElement("form");
     form.onsubmit = (e) => {
