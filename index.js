@@ -218,7 +218,6 @@
     ".TopstoryItem--advertCard",
     ".RichText-LinkCardContainer",
     ".ecommerce-ad-box",
-    //".QuestionHeader-footer",
     ".QuestionHeader-tags",
 
     ".Reward",
